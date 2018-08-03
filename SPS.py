@@ -94,17 +94,3 @@ print("k")
 xml_exp = SPSXMLExport('c:/temp/')
 xml_exp.export_feats_to_XML(recs, {SPSClassEnum.DISORDERS: releated_recs})
 
-
-
-    # insp = spssubclasses.inspectionTypeSub()
-    # insp.set_serialNumber(None)
-    # insp.set_bioRegion("absjk876%")
-    # insp.set_diam(None)
-    # insp.set_comments("test door")
-    # insp.set_estabYear(None)
-    # insp.set_stand("")
-    # insp.set_forestManager("NZFyOA")
-    # insp.set_inspType("FBS")
-    # insps.add_inspection(insp)
-    # print(insp)
-    # insps.export(outfile,0)#sys.stdout,1)

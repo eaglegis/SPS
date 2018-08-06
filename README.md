@@ -50,7 +50,7 @@ The Python classes are built with generateDS based on the supplied schema.
 * [Parse and export to xml](http://www.davekuhlman.org/generateds_tutorial.html#using-the-generated-code-to-parse-and-export-an-xml-document)
 * [Export method](http://www.davekuhlman.org/generateDS.html#method-export)
 * [generateDS](https://bitbucket.org/dkuhlman/generateds)
-* [generateDs overview](https://bitbucket.org/dkuhlman/generateds/overview)
+* [generateDS overview](https://bitbucket.org/dkuhlman/generateds/overview)
 * [generateDS at source forge](https://sourceforge.net/projects/generateds/)
 * [Dave Kuhlman](https://davekuhlman.org)
 * [Dave Kulhman generateDS](http://www.davekuhlman.org/generateDS.html)
@@ -61,6 +61,8 @@ Something like
 > C:/../Python/Python36/Scripts/generateDS.py -f -o "c:/../work/sps/sps/spsclasses.py" -s "c:/../work/sps/sps/spssubclasses.py" --super="spsclasses" c:/../work/sps/sps/inspectionschema.xml
 
 This will allow you to override any functions you need in the sub classes script.
+
+**Note:** You only require generateDS if you need to _**recreate**_ the Python classes (from an updated schema file) or generate new classes.
 
 ## Authors
 

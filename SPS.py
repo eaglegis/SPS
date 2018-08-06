@@ -41,7 +41,7 @@ from Utils import Utils
 from SPSXMLExport import SPSXMLExport
 from SPSClassEnum import SPSClassEnum
 
-func_lookups = {"SampleDate":Utils.changeTimeZone}
+func_lookups = {"SampleDate":Utils.change_time_zone}
 lookups = {"FormID":"serialNumber","Owner":"forestManager","SampleDate":"date"}
 
 # with open('c:/temp/out.xml','w') as outfile:

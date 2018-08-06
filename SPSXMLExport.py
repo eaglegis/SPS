@@ -3,9 +3,6 @@ import datetime
 import os
 import spsclasses
 import spssubclasses
-from lxml import etree
-from ArcGISOnlineHelper import ArcGISOnlineHelper
-from ArcGISOnlineHelper import ArcGISOnlineTypesEnum
 from Utils import Utils
 from SPSClassEnum import SPSClassEnum
 
@@ -14,8 +11,14 @@ class SPSXMLExport(object):
     def __init__(self,out_location):
         now = datetime.datetime.now().strftime('%Y-%m-%dT%H%M%S')
         self._out = os.path.join(out_location,'%s.xml' % now)
-        self._func_lookups = {"SampleDate": Utils.changeTimeZone}
-        self._lookups = {"FormID": "serialNumber", "Owner": "forestManager", "SampleDate": "date","Description":"name","AgentName":"agent","Type":"type_","Ext":"extent","Incid":"incidencePercent","SeverityPer":"severityPercent"}
+        self._func_lookups = {"SampleDate": Utils.change_time_zone}
+        self._default_lookups = {"datum":"NZGD2000","projection":"NZTM"} # add a function for the "default fields"
+        self._lookups = {"FormID": "serialNumber", "Owner": "forestManager",
+                         "SampleDate": "date","Description":"name",
+                         "AgentName":"agent","Type":"type_",
+                         "Ext":"extent","Incid":"incidencePercent",
+                         "SeverityPer":"severityPercent",
+                         "x":"east","y":"north","Err1":"err"}
         self._lower_first = lambda s: s[:1].lower() + s[1:] if s else ''
 
     @property
@@ -34,21 +37,30 @@ class SPSXMLExport(object):
                     for feat in feats:
                         insp = spssubclasses.inspectionTypeSub()
                         self.set_feature_attribute(insp, feat.attributes)
+                        points = spssubclasses.pointsTypeSub()
+                        self.set_feature_defaults(points)
+                        # we know that there will only be only point
+                        point = spssubclasses.pointTypeSub()
+                        self.set_feature_attribute(point,feat.geometry)
+
+                        # an we have a case where a point attr is stored on the feature
+                        self.set_feature_attribute(point,feat.attributes)
+                        points.add_point(point)
+                        insp.set_points(points)
                         if related_recs:
                             if SPSClassEnum.DISORDERS in related_recs.keys():
                                 disorders = spssubclasses.disordersTypeSub()
                                 #loop here
                                 for rec in self.get_realted_records_for_object_id(related_recs[SPSClassEnum.DISORDERS],feat.attributes['OBJECTID']):
                                     # strip off Disorder off keys - would be easier if AGOL used the same schema
-                                    new = dict((k.replace("Disorder",""),v) for k,v in rec['attributes'].items())
+                                    new = dict((k.replace("Disorder",""), v) for k, v in rec['attributes'].items())
                                     disorder = spssubclasses.disorderTypeSub()
                                     self.set_feature_attribute(disorder,new)
-
                                     disorders.add_disorder(disorder)
                                 if disorders:
                                     insp.set_disorders(disorders)
                             if SPSClassEnum.INSPECTIONS in related_recs.keys():
-                                pass
+                                pass # not implemented - no inspections as yet
 
                         insps.add_inspection(insp)
                     insps.export(outfile, 0)
@@ -60,6 +72,11 @@ class SPSXMLExport(object):
             if a_grp['objectId'] == object_id:
                 return a_grp['relatedRecords']
         return []
+
+    def set_feature_defaults(self,an_object):
+        #we have cases where there is no corresponding field in the arcgis feat.
+        for k,v in self._default_lookups.items():
+            setattr(an_object, k, self._default_lookups[k])
 
 
     def set_feature_attribute(self,an_object,some_atts):

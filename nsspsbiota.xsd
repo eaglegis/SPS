@@ -1,5 +1,0 @@
-<xsd:schema
-   targetNamespace="URN:spsb"
-   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <xsd:include schemaLocation="spsschema.xml"/>
-</xsd:schema>

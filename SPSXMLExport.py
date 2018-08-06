@@ -42,7 +42,6 @@ class SPSXMLExport(object):
                         # we know that there will only be only point
                         point = spssubclasses.pointTypeSub()
                         self.set_feature_attribute(point,feat.geometry)
-
                         # an we have a case where a point attr is stored on the feature
                         self.set_feature_attribute(point,feat.attributes)
                         points.add_point(point)
@@ -59,8 +58,8 @@ class SPSXMLExport(object):
                                     disorders.add_disorder(disorder)
                                 if disorders:
                                     insp.set_disorders(disorders)
-                            if SPSClassEnum.INSPECTIONS in related_recs.keys():
-                                pass # not implemented - no inspections as yet
+                            if SPSClassEnum.IDENTIFICATIONS in related_recs.keys():
+                                pass # not implemented - no identifications as yet
 
                         insps.add_inspection(insp)
                     insps.export(outfile, 0)
@@ -78,8 +77,7 @@ class SPSXMLExport(object):
         for k,v in self._default_lookups.items():
             setattr(an_object, k, self._default_lookups[k])
 
-
-    def set_feature_attribute(self,an_object,some_atts):
+    def set_feature_attribute(self, an_object,some_atts):
         for an_att, value in some_atts.items():
             print(an_att, value)
             # do a getattr to see if it exists

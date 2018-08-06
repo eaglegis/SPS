@@ -10,12 +10,12 @@ class Toolbox(object):
     def __init__(self):
         """Define the toolbox (the name of the toolbox is the name of the
         .pyt file)."""
-        self.label = "FBSSamplesExport"
-        self.alias = "FBS Samples Export"
+        self.label = "FBS Samples Export"
+        self.alias = "FBSSamplesExport"
         # List of tool classes associated with this toolbox
         self.tools = [SamplesExportTool]#,ReloadModules] # uncomment to update code and test from Pro
 
-class CommonTool():
+class CommonTool(object):
     def __init__(self):
         self.log = lambda msg : arcpy.AddMessage(str(msg))
         self.error_log = lambda msg : arcpy.AddError(str(msg))
@@ -105,7 +105,7 @@ class SamplesExportTool(CommonTool):
                 webbrowser.open("file://{0}".format(xml_exp.out_file))
             except Exception as e:
                 self.error_log(str(e))
-        except:
+        except Exception as e:
             self.error_log(str(e))
         return
 

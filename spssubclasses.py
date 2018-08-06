@@ -156,7 +156,7 @@ def parseEtree(inFilename, silence=False):
 
 def parseString(inString, silence=False):
     if sys.version_info.major == 2:
-        from StringIO import StringIO
+        from io import StringIO
     else:
         from io import BytesIO as StringIO
     parser = None

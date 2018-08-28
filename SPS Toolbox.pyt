@@ -16,7 +16,7 @@ class Toolbox(object):
         self.label = "FBS Samples Export"
         self.alias = "FBSSamplesExport"
         # List of tool classes associated with this toolbox
-        self.tools = [SamplesExportTool,ReloadModules] # uncomment to update code and test from Pro
+        self.tools = [SamplesExportTool]# ,ReloadModules] # uncomment to update code and test from Pro
 
 class CommonTool(object):
     def __init__(self):

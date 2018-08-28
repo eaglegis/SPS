@@ -5,6 +5,9 @@ import SPSXMLExport
 import webbrowser
 from SPSClassEnum import SPSClassEnum
 import Utils
+import spsclasses
+import spssubclasses
+import os
 
 class Toolbox(object):
     def __init__(self):
@@ -13,7 +16,7 @@ class Toolbox(object):
         self.label = "FBS Samples Export"
         self.alias = "FBSSamplesExport"
         # List of tool classes associated with this toolbox
-        self.tools = [SamplesExportTool]#,ReloadModules] # uncomment to update code and test from Pro
+        self.tools = [SamplesExportTool,ReloadModules] # uncomment to update code and test from Pro
 
 class CommonTool(object):
     def __init__(self):
@@ -44,22 +47,35 @@ class SamplesExportTool(CommonTool):
             displayName="Password",
             name="password",
             datatype="GPStringHidden",
+            parameterType="Required",
             direction="Input")
 
         param2 = arcpy.Parameter(
             displayName="Features",
             name="features",
             datatype="GPFeatureLayer",
+            parameterType="Required",
             direction="Input")
 
         param3 = arcpy.Parameter(
             displayName="Output Folder",
             name="out_folder",
             datatype="DEFolder",
-            direction="Input"
+            direction="Input",
+            parameterType="Required"
         )
 
-        return [param0, param1, param2, param3]
+        param4 = arcpy.Parameter(
+            displayName="Validation File",
+            name="val_file",
+            datatype="DEFile",
+            direction="Input",
+            parameterType="Required"
+        )
+        param4.value = os.path.join(os.path.dirname(os.path.realpath(__file__)),"InspectionSchema.xml")
+
+
+        return [param0, param1, param2, param3, param4]
 
     def isLicensed(self):
         """Set whether tool is licensed to execute."""
@@ -80,7 +96,7 @@ class SamplesExportTool(CommonTool):
         """The source code of the tool."""
         try:
             self.log("Running Export Tool")
-            user_name, password, feat_layer, out_loc = parameters
+            user_name, password, feat_layer, out_loc, val_file  = parameters
             ids = feat_layer.value.getSelectionSet()
             agol = ArcGISOnlineHelper.ArcGISOnlineHelper()
             agol.get_gis(arcpy.GetActivePortalURL(),user_name.value,password.value)
@@ -99,8 +115,11 @@ class SamplesExportTool(CommonTool):
             try:
                 # assumption is that the relationship id 0 - will need to update this as we go forward - i.e. inspections
                 releated_recs = agol_feat_layer.query_related_records(object_ids=str_ids,relationship_id="0")
-                xml_exp = SPSXMLExport.SPSXMLExport(out_loc.valueAsText)
+                xml_exp = SPSXMLExport.SPSXMLExport(out_loc.valueAsText,self.log)
                 xml_exp.export_feats_to_XML(feats,{SPSClassEnum.DISORDERS:releated_recs})
+
+                Utils.Utils.valid_xml(xml_exp.out_file,val_file.valueAsText,self.log)
+                self.log("XML Validated ok.")
                 self.log("Exported file to {0}".format(xml_exp.out_file))
                 webbrowser.open("file://{0}".format(xml_exp.out_file))
             except Exception as e:
@@ -140,7 +159,7 @@ class ReloadModules(CommonTool):
     def execute(self, parameters, messages):
         """The source code of the tool."""
         self.log("Reloading modules")
-        modules = [ArcGISOnlineHelper,SPSXMLExport,Utils]
+        modules = [ArcGISOnlineHelper,SPSXMLExport,Utils,spsclasses,spssubclasses]
         for x in modules:
             self.log("reloading {0}".format(str(x)))
             importlib.reload(x)

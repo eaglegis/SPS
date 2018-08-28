@@ -1,3 +1,6 @@
+#This is the original script by Marc Graham for exporting to XML
+
+
 # Requires lxml to be added to python
 # doesnt check for existence of temp file geodb
 # output folder should be a folder

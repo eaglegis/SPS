@@ -2,20 +2,21 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Fri Aug  3 16:48:57 2018 by generateDS.py version 2.29.19.
+# Generated Tue Aug 28 15:08:24 2018 by generateDS.py version 2.29.19.
 # Python 3.6.5 |Anaconda, Inc.| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]
 #
 # Command line options:
 #   ('-f', '')
-#   ('-o', 'c:/zzcloud/dropbox/work/sps/sps/spsclasses.py')
-#   ('-s', 'c:/zzcloud/dropbox/work/sps/sps/spssubclasses.py')
+#   ('-o', 'c:/ZZCloud/Dropbox/work/sps/sps/spsclasses.py')
+#   ('-s', 'c:/ZZCloud/Dropbox/work/sps/sps/spssubclasses.py')
 #   ('--super', 'spsclasses')
+#   ('--always-export-default', '')
 #
 # Command line arguments:
-#   c:/zzcloud/dropbox/work/sps/sps/inspectionschema.xml
+#   c:/ZZCloud/Dropbox/work/sps/sps/inspectionschema.xml
 #
 # Command line:
-#   C:/Users/fsh/AppData/Roaming/Python/Python36/Scripts/generateDS.py -f -o "c:/zzcloud/dropbox/work/sps/sps/spsclasses.py" -s "c:/zzcloud/dropbox/work/sps/sps/spssubclasses.py" --super="spsclasses" c:/zzcloud/dropbox/work/sps/sps/inspectionschema.xml
+#   C:/Users/fsh/AppData/Roaming/Python/Python36/Scripts/generateDS.py -f -o "c:/ZZCloud/Dropbox/work/sps/sps/spsclasses.py" -s "c:/ZZCloud/Dropbox/work/sps/sps/spssubclasses.py" --super="spsclasses" --always-export-default c:/ZZCloud/Dropbox/work/sps/sps/inspectionschema.xml
 #
 # Current working directory (os.getcwd()):
 #   arcgispro-py3
@@ -34,7 +35,7 @@ except ImportError:
 
 Validate_simpletypes_ = True
 if sys.version_info.major == 2:
-    BaseStrType_ = str
+    BaseStrType_ = basestring
 else:
     BaseStrType_ = str
 
@@ -412,7 +413,7 @@ except ImportError as exp:
         def convert_unicode(instring):
             if isinstance(instring, str):
                 result = quote_xml(instring)
-            elif sys.version_info.major == 2 and isinstance(instring, str):
+            elif sys.version_info.major == 2 and isinstance(instring, unicode):
                 result = quote_xml(instring).encode('utf8')
             else:
                 result = GeneratedsSuper.gds_encode(str(instring))
@@ -886,7 +887,7 @@ class inspectionType(GeneratedsSuper):
     def set_identifications(self, identifications): self.identifications = identifications
     def hasContent_(self):
         if (
-            self.serialNumber is not None or
+            True or
             self.forestManager is not None or
             self.location is not None or
             self.stand is not None or
@@ -943,12 +944,21 @@ class inspectionType(GeneratedsSuper):
         if self.serialNumber is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<serialNumber>%s</serialNumber>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.serialNumber), input_name='serialNumber')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<serialNumber/>%s' % (eol_))
         if self.forestManager is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<forestManager>%s</forestManager>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.forestManager), input_name='forestManager')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<forestManager/>%s' % (eol_))
         if self.location is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<location>%s</location>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.location), input_name='location')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<location/>%s' % (eol_))
         if self.stand is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<stand>%s</stand>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.stand), input_name='stand')), eol_))
@@ -961,12 +971,18 @@ class inspectionType(GeneratedsSuper):
         if self.bioRegion is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<bioRegion>%s</bioRegion>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.bioRegion), input_name='bioRegion')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<bioRegion/>%s' % (eol_))
         if self.siteType is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<siteType>%s</siteType>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.siteType), input_name='siteType')), eol_))
         if self.date is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<date>%s</date>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.date), input_name='date')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<date/>%s' % (eol_))
         if self.inspector is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<inspector>%s</inspector>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.inspector), input_name='inspector')), eol_))
@@ -1143,7 +1159,7 @@ class pointsType(GeneratedsSuper):
     def replace_point_at(self, index, value): self.point[index] = value
     def hasContent_(self):
         if (
-            self.datum is not None or
+            True or
             self.projection is not None or
             self.comments is not None or
             self.point
@@ -1182,9 +1198,15 @@ class pointsType(GeneratedsSuper):
         if self.datum is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<datum>%s</datum>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.datum), input_name='datum')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<datum/>%s' % (eol_))
         if self.projection is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<projection>%s</projection>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.projection), input_name='projection')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<projection/>%s' % (eol_))
         if self.comments is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<comments>%s</comments>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.comments), input_name='comments')), eol_))
@@ -1247,7 +1269,7 @@ class pointType(GeneratedsSuper):
     def set_err(self, err): self.err = err
     def hasContent_(self):
         if (
-            self.east is not None or
+            True or
             self.north is not None or
             self.err is not None
         ):
@@ -1285,9 +1307,15 @@ class pointType(GeneratedsSuper):
         if self.east is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<east>%s</east>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.east), input_name='east')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<east/>%s' % (eol_))
         if self.north is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<north>%s</north>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.north), input_name='north')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<north/>%s' % (eol_))
         if self.err is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<err>%s</err>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.err), input_name='err')), eol_))
@@ -1450,7 +1478,7 @@ class disorderType(GeneratedsSuper):
     def set_isSampleTaken(self, isSampleTaken): self.isSampleTaken = isSampleTaken
     def hasContent_(self):
         if (
-            self.name is not None or
+            True or
             self.comments is not None or
             self.agent is not None or
             self.aspect is not None or
@@ -1497,6 +1525,9 @@ class disorderType(GeneratedsSuper):
         if self.name is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<name>%s</name>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.name), input_name='name')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<name/>%s' % (eol_))
         if self.comments is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<comments>%s</comments>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.comments), input_name='comments')), eol_))
@@ -1728,7 +1759,7 @@ class identificationType(GeneratedsSuper):
     def set_comments(self, comments): self.comments = comments
     def hasContent_(self):
         if (
-            self.name is not None or
+            True or
             self.agent is not None or
             self.family is not None or
             self.type_ is not None or
@@ -1776,6 +1807,9 @@ class identificationType(GeneratedsSuper):
         if self.name is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<name>%s</name>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.name), input_name='name')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<name/>%s' % (eol_))
         if self.agent is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<agent>%s</agent>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.agent), input_name='agent')), eol_))
@@ -1800,6 +1834,9 @@ class identificationType(GeneratedsSuper):
         if self.retained is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<retained>%s</retained>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.retained), input_name='retained')), eol_))
+        else:
+             showIndent(outfile, level, pretty_print)
+             outfile.write('<retained/>%s' % (eol_))
         if self.herbariumNo is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<herbariumNo>%s</herbariumNo>%s' % (self.gds_encode(self.gds_format_string(quote_xml(self.herbariumNo), input_name='herbariumNo')), eol_))

@@ -19,7 +19,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 The Python toolbox requires
 * lxml (lxml 4.2.3)- used by the generated Pyhon classes
-* arcgis (1.4.2) - uses the ArcGIS Python API to query the data directly
+* arcgis (1.4.2) - uses the ArcGIS Python API to query the data directly from ArcGIS Online
 
 These need to be added to the ArcGIS Pro installation via the Python back stage.
 [ArcGIS Pro Python packages](http://pro.arcgis.com/en/pro-app/arcpy/get-started/what-is-conda.htm)
@@ -28,9 +28,9 @@ These need to be added to the ArcGIS Pro installation via the Python back stage.
 
 To install:
 
-* Add required Python packages
+* Add required Python packages to ArcGIS Pro via the Python backstage
 * Copy toolbox folder (with supporting modules) to a location on disk
-* Add this folder to ArcGIS pro Catalog view
+* Add this folder to ArcGIS Pro Catalog view
 * Test toolbox
 
 
@@ -58,17 +58,33 @@ The Python classes are built with generateDS based on the supplied schema.
 This can be installed via pip.
 Once it is available generate the Python classes based on the supplied xml schema.
 Something like
-> C:/../Python/Python36/Scripts/generateDS.py -f -o "c:/../work/sps/sps/spsclasses.py" -s "c:/../work/sps/sps/spssubclasses.py" --super="spsclasses" c:/../work/sps/sps/inspectionschema.xml
+> C:/../Python/Python36/Scripts/generateDS.py -f -o "c:/../work/sps/sps/spsclasses.py" -s "c:/../work/sps/sps/spssubclasses.py" --super="spsclasses" --always-export-default  c:/../work/sps/sps/inspectionschema.xml
+
+See the documentation for more detail
+http://www.davekuhlman.org/generateDS.html#the-command-line-interface-how-to-use-it
+
 
 This will allow you to override any functions you need in the sub classes script.
 
 **Note:** You only require generateDS if you need to _**recreate**_ the Python classes (from an updated schema file) or generate new classes.
 
+**_Big Note_ on generateDS.py**
+Note that a few changes were made to this file for the sake of this project.
+SPS need all elements with minOccurs=1 (or no present as the default) written to the XML to ensure validation. By default the generateDS code ignores elements with no value or children elements with no content. I have made changes to the following functions to support this:
+* generateHascontentMethod
+* generateExportFn_1
+
+The generateDS.py file is included as part of this project and can be reviewed against the latest version of generateDS if required in the future. If installing on a machine to regenerate classes then review this file against the current version and make the same chnages if neccessary. Note these changes have not been pushed back to the main generateDS repository.
+This will be somewhere like C:\Users\ ..\AppData\Roaming\Python\Python36\Scripts
+
+
 ## Authors
 
-Fraser Hand (Python toolbox, not generateDS or ArcGIS python API)
+Fraser Hand (Python toolbox only, not generateDS or ArcGIS Python API)
 
 ## Acknowledgments
 
 * Esri Python API team
 * Dave Kuhlman
+
+:dromedary_camel:

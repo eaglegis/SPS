@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 
 #
-# Generated Fri Aug  3 16:48:57 2018 by generateDS.py version 2.29.19.
+# Generated Tue Aug 28 15:08:24 2018 by generateDS.py version 2.29.19.
 # Python 3.6.5 |Anaconda, Inc.| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]
 #
 # Command line options:
 #   ('-f', '')
-#   ('-o', 'c:/zzcloud/dropbox/work/sps/sps/spsclasses.py')
-#   ('-s', 'c:/zzcloud/dropbox/work/sps/sps/spssubclasses.py')
+#   ('-o', 'c:/ZZCloud/Dropbox/work/sps/sps/spsclasses.py')
+#   ('-s', 'c:/ZZCloud/Dropbox/work/sps/sps/spssubclasses.py')
 #   ('--super', 'spsclasses')
+#   ('--always-export-default', '')
 #
 # Command line arguments:
-#   c:/zzcloud/dropbox/work/sps/sps/inspectionschema.xml
+#   c:/ZZCloud/Dropbox/work/sps/sps/inspectionschema.xml
 #
 # Command line:
-#   C:/Users/fsh/AppData/Roaming/Python/Python36/Scripts/generateDS.py -f -o "c:/zzcloud/dropbox/work/sps/sps/spsclasses.py" -s "c:/zzcloud/dropbox/work/sps/sps/spssubclasses.py" --super="spsclasses" c:/zzcloud/dropbox/work/sps/sps/inspectionschema.xml
+#   C:/Users/fsh/AppData/Roaming/Python/Python36/Scripts/generateDS.py -f -o "c:/ZZCloud/Dropbox/work/sps/sps/spsclasses.py" -s "c:/ZZCloud/Dropbox/work/sps/sps/spssubclasses.py" --super="spsclasses" --always-export-default c:/ZZCloud/Dropbox/work/sps/sps/inspectionschema.xml
 #
 # Current working directory (os.getcwd()):
 #   arcgispro-py3
@@ -156,7 +157,7 @@ def parseEtree(inFilename, silence=False):
 
 def parseString(inString, silence=False):
     if sys.version_info.major == 2:
-        from io import StringIO
+        from StringIO import StringIO
     else:
         from io import BytesIO as StringIO
     parser = None

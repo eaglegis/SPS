@@ -8,11 +8,11 @@ from SPSClassEnum import SPSClassEnum
 
 class SPSXMLExport(object):
 
-    def __init__(self,out_location):
+    def __init__(self,out_location,log=None):
         now = datetime.datetime.now().strftime('%Y-%m-%dT%H%M%S')
         self._out = os.path.join(out_location,'%s.xml' % now)
         self._func_lookups = {"SampleDate": Utils.change_time_zone}
-        self._default_lookups = {"datum":"NZGD2000","projection":"NZTM"} # add a function for the "default fields"
+        self._default_lookups = {"datum":"WGS84","projection":"NZTM2000"} # add a function for the "default fields"
         self._lookups = {"FormID": "serialNumber", "Owner": "forestManager",
                          "SampleDate": "date","Description":"name",
                          "AgentName":"agent","Type":"type_",
@@ -20,7 +20,7 @@ class SPSXMLExport(object):
                          "SeverityPer":"severityPercent",
                          "x":"east","y":"north","Err1":"err"}
         self._lower_first = lambda s: s[:1].lower() + s[1:] if s else ''
-
+        self._log = log
     @property
     def out_file(self):
         if self._out:
@@ -46,9 +46,11 @@ class SPSXMLExport(object):
                         self.set_feature_attribute(point,feat.attributes)
                         points.add_point(point)
                         insp.set_points(points)
+                        disorders = spssubclasses.disordersTypeSub()
+
                         if related_recs:
                             if SPSClassEnum.DISORDERS in related_recs.keys():
-                                disorders = spssubclasses.disordersTypeSub()
+                                # disorders = spssubclasses.disordersTypeSub()
                                 #loop here
                                 for rec in self.get_realted_records_for_object_id(related_recs[SPSClassEnum.DISORDERS],feat.attributes['OBJECTID']):
                                     # strip off Disorder off keys - would be easier if AGOL used the same schema
@@ -58,12 +60,19 @@ class SPSXMLExport(object):
                                     disorders.add_disorder(disorder)
                                 if disorders:
                                     insp.set_disorders(disorders)
+
                             if SPSClassEnum.IDENTIFICATIONS in related_recs.keys():
                                 pass # not implemented - no identifications as yet
 
+                        # if we haven't got any related recs so we have create some empty ones.
+                        # if self._log: self._log(str(insp.get_disorders().disorder))
+                        if not insp.get_disorders().disorder:
+                            # disorder is a minoccurs=1 so we need at least one empty record
+                            disorders.add_disorder(spssubclasses.disorderTypeSub())
+                            insp.set_disorders(disorders)
                         insps.add_inspection(insp)
                     insps.export(outfile, 0)
-                except Exception as e:
+                except Exception:
                     raise
 
     def get_realted_records_for_object_id(self,related_records,object_id):

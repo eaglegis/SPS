@@ -1,6 +1,7 @@
 from arcgis.gis import GIS
 from enum import Enum
 from arcgis.features import FeatureLayer
+from arcgis.geometry import project
 
 class ArcGISOnlineTypesEnum(Enum):
     # this can easily be extended going forward
@@ -38,3 +39,6 @@ class ArcGISOnlineHelper(object):
         # this is on the layer -> properties -> relationships
         # object ids are comma separated
         return item.layers[layer_id].query_related_records(object_ids,relationship_id)
+
+    def project_geom(self,geoms, in_sr, our_sr):
+        return project(geoms,in_sr,our_sr)

@@ -114,8 +114,15 @@ class SamplesExportTool(CommonTool):
                 self.log("Exporting all features")
             try:
                 # assumption is that the relationship id 0 - will need to update this as we go forward - i.e. inspections
-                releated_recs = agol_feat_layer.query_related_records(object_ids=str_ids,relationship_id="0")
+                releated_recs = agol_feat_layer.query_related_records(object_ids=str_ids,relationship_id="1")
+
                 xml_exp = SPSXMLExport.SPSXMLExport(out_loc.valueAsText,self.log)
+
+                for feat in feats.features:
+                    new_geom = agol.project_geom([feat.geometry], 4326, 2193)
+                    feat.geometry['x'] = new_geom[0]['x']
+                    feat.geometry['y'] = new_geom[0]['y']
+
                 xml_exp.export_feats_to_XML(feats,{SPSClassEnum.DISORDERS:releated_recs})
 
                 Utils.Utils.valid_xml(xml_exp.out_file,val_file.valueAsText,self.log)

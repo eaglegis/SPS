@@ -12,7 +12,7 @@ class SPSXMLExport(object):
         now = datetime.datetime.now().strftime('%Y-%m-%dT%H%M%S')
         self._out = os.path.join(out_location,'%s.xml' % now)
         self._func_lookups = {"SampleDate": Utils.change_time_zone}
-        self._default_lookups = {"datum":"WGS84","projection":"NZTM2000"} # add a function for the "default fields"
+        self._default_lookups = {"datum":"NZGD2000","projection":"NZTM2000"} # add a function for the "default fields"
         self._lookups = {"FormID": "serialNumber", "Owner": "forestManager",
                          "SampleDate": "date","Description":"name",
                          "AgentName":"agent","Type":"type_",
@@ -52,7 +52,7 @@ class SPSXMLExport(object):
                             if SPSClassEnum.DISORDERS in related_recs.keys():
                                 # disorders = spssubclasses.disordersTypeSub()
                                 #loop here
-                                for rec in self.get_realted_records_for_object_id(related_recs[SPSClassEnum.DISORDERS],feat.attributes['OBJECTID']):
+                                for rec in self.get_realted_records_for_object_id(related_recs[SPSClassEnum.DISORDERS],feat.attributes['objectid']):
                                     # strip off Disorder off keys - would be easier if AGOL used the same schema
                                     new = dict((k.replace("Disorder",""), v) for k, v in rec['attributes'].items())
                                     disorder = spssubclasses.disorderTypeSub()
